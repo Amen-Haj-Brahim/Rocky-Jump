@@ -96,8 +96,10 @@ def main():
             #move and show enemy
             en_pos.x-=550*dt*enspeedmult
             screen.blit(ensprite,en_pos)
+            print(en_pos.y+359,player_pos.y+248,en_pos.y)
+            print(en_pos.y+359,player_pos.y,en_pos.y)
             #------hit system
-            if (player_pos.x+240>=en_pos.x) and (player_pos.y-256<=en_pos.y and en_pos.y-359<=player_pos.y):
+            if (player_pos.x+226>=en_pos.x) and (en_pos.y+359>=player_pos.y+248>=en_pos.y or en_pos.y+359>=player_pos.y>=en_pos.y):
                 running=False
         #reset spawner
         if counter >3.6:
