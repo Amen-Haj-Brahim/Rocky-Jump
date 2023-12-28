@@ -3,6 +3,7 @@ import pygame
 from pygame.locals import *
 from pygame import mixer
 import random
+import csv
 # ---------------------------------------------
 def main():
     def background():
@@ -87,7 +88,7 @@ def main():
         # ENEMY CODE--------------------------------------------------------------------------
         #spawn enemy every 180 frames
         if not makecd:
-            c=random.uniform(0.5,2)
+            c=random.uniform(0.1,1.5)
             makecd=True
         if counter > c:
             #spawn
@@ -106,13 +107,27 @@ def main():
                 if (player_pos.x+226>=en_pos.x) and (en_pos.y+359>=player_pos.y+248>=en_pos.y or en_pos.y+359>=player_pos.y>=en_pos.y):
                     break
         #reset spawner
-        if counter >3.6:
+        if counter >1.5+c:
             counter=0
             makepos=False
         # flip() the display to put your work on screen
         pygame.display.flip()
         dt = clock.tick(60) / 1000
     pygame.quit()
+    name=input("what is your name?")
+    f=csv.reader(f)
+    for l in f:
+        if l["name"]==name:
+            r=l["record"]
+            break
+    if r>score:
+        score=r
+    with open('leaderboard.csv','a') as f:
+        w=csv.DictWriter(f,fieldnames=["name","score","record"])
+        w.writerow({"name":name,"record":score})
+        # w=writer(f)
+        # w.writerow([name,score])
+        # f.close()
 # ---------------------
 main()
 # waaa test git
