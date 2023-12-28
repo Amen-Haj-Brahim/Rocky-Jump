@@ -34,7 +34,7 @@ def main():
     playersprite = pygame.image.load("moai.png")
     pygame.display.set_icon(pygame_icon)
     # gameplay vars
-    enemies = [pygame.image.load("Peter_Griffin.png"), pygame.image.load("four.jpg")]
+    enemies = [pygame.image.load("Peter_Griffinn.jpeg"), pygame.image.load("four.jpg")]
     clock = pygame.time.Clock()
     running = True
     dt = 0
@@ -44,6 +44,7 @@ def main():
     velocity = 0
     counter = 0
     makepos=False
+    makecd=False
     # sound vars
     mixer.init()
     #mixer.music.load("Nokia ringtone arabic.mp3")
@@ -85,22 +86,25 @@ def main():
             player_pos.y += 300*dt*5
         # ENEMY CODE--------------------------------------------------------------------------
         #spawn enemy every 180 frames
-        if counter > 1.8:
+        if not makecd:
+            c=random.uniform(0.5,2)
+            makecd=True
+        if counter > c:
             #spawn
             if not makepos:
                 x = random.randint(300, 650)
                 ensprite=enemies[random.randint(0, 1)]
                 makepos=True
                 en_pos=pygame.Vector2(1700, x)
-                hitzone=()
             #move and show enemy
             en_pos.x-=550*dt*enspeedmult
             screen.blit(ensprite,en_pos)
-            print(en_pos.y+359,player_pos.y+248,en_pos.y)
-            print(en_pos.y+359,player_pos.y,en_pos.y)
+            #print(en_pos.y+359,player_pos.y+248,en_pos.y)
+            #print(en_pos.y+359,player_pos.y,en_pos.y)
             #------hit system
-            if (player_pos.x+226>=en_pos.x) and (en_pos.y+359>=player_pos.y+248>=en_pos.y or en_pos.y+359>=player_pos.y>=en_pos.y):
-                running=False
+            if not en_pos.x<player_pos.x:    
+                if (player_pos.x+226>=en_pos.x) and (en_pos.y+359>=player_pos.y+248>=en_pos.y or en_pos.y+359>=player_pos.y>=en_pos.y):
+                    break
         #reset spawner
         if counter >3.6:
             counter=0
