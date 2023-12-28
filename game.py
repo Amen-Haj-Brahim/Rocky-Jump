@@ -4,6 +4,7 @@ from pygame.locals import *
 from pygame import mixer
 import random
 import csv
+import pandas as pd
 # ---------------------------------------------
 def main():
     def background():
@@ -115,19 +116,26 @@ def main():
         dt = clock.tick(60) / 1000
     pygame.quit()
     name=input("what is your name?")
-    f=csv.reader(f)
-    for l in f:
-        if l["name"]==name:
-            r=l["record"]
-            break
-    if r>score:
-        score=r
-    with open('leaderboard.csv','a') as f:
-        w=csv.DictWriter(f,fieldnames=["name","score","record"])
-        w.writerow({"name":name,"record":score})
-        # w=writer(f)
-        # w.writerow([name,score])
-        # f.close()
+    data=pd.read_csv("leaderboard.csv")
+    #updating the player or adding them to the leaderboard
+    found=False
+    for i in range(len(data)):
+        if data["name"][i]==name:
+            if data["score"][i]>score:
+                score=data["score"][i]
+                found=True
+            data["score"][i]=score
+    if not found:
+        data["name"].append(name)
+        data["record"].append(score)
+    #adding data to leaderboard
+    with open("leaderboard.csv",'w',newline='') as f:
+        fields=["name","record"]
+        writer=csv.DictWriter(f,fieldnames=fields)
+        writer.writeheader()
+        for i in range(len(data)):
+            for k,v in data[i].items():
+                writer.writerow({fields[i]:v})
 # ---------------------
 main()
 # waaa test git
