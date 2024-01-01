@@ -1,4 +1,3 @@
-# Example file showing a circle moving on screen
 import pygame
 from pygame.locals import *
 from pygame import mixer
@@ -38,7 +37,7 @@ def main():
     # gameplay vars
     enemies = [pygame.image.load("Peter_Griffinn.jpeg"), pygame.image.load("four.jpg")]
     clock = pygame.time.Clock()
-    running = True
+    running = False
     dt = 0
     player_pos = pygame.Vector2(50, 638)
     ground = pygame.image.load("ground.jpg")
@@ -116,26 +115,25 @@ def main():
         dt = clock.tick(60) / 1000
     pygame.quit()
     name=input("what is your name?")
-    data=pd.read_csv("leaderboard.csv")
+    score=300
+    fields=["name","record"]
+    data=pd.read_csv("leaderboard.csv",)
+    data=pd.DataFrame(data)
+    print(data.columns.tolist())
+    print(data)
     #updating the player or adding them to the leaderboard
     found=False
     for i in range(len(data)):
-        if data["name"][i]==name:
-            if data["score"][i]>score:
-                score=data["score"][i]
+        if data['name'][i]==name:
+            if data['record'][i]<score:
+                score=data["record"][i]
                 found=True
-            data["score"][i]=score
+            data['record'][i]=score
     if not found:
-        data["name"].append(name)
-        data["record"].append(score)
+        data=pd.concat([data,pd.DataFrame([{"name":name,"record":score}])],ignore_index=True)
+    print(data)
     #adding data to leaderboard
-    with open("leaderboard.csv",'w',newline='') as f:
-        fields=["name","record"]
-        writer=csv.DictWriter(f,fieldnames=fields)
-        writer.writeheader()
-        for i in range(len(data)):
-            for k,v in data[i].items():
-                writer.writerow({fields[i]:v})
+    data.to_csv("leaderboard.csv",index=False)
 # ---------------------
 main()
 # waaa test git
