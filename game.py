@@ -37,7 +37,7 @@ def main():
     # gameplay vars
     enemies = [pygame.image.load("Peter_Griffinn.jpeg"), pygame.image.load("four.jpg")]
     clock = pygame.time.Clock()
-    running = False
+    running = True
     dt = 0
     player_pos = pygame.Vector2(50, 638)
     ground = pygame.image.load("ground.jpg")
@@ -48,8 +48,8 @@ def main():
     makecd=False
     # sound vars
     mixer.init()
-    #mixer.music.load("Nokia ringtone arabic.mp3")
-    #mixer.music.play(loops=-1)
+    mixer.music.load("Nokia ringtone arabic.mp3")
+    mixer.music.play(loops=-1)
     # background vars
     global gameSpeed, Xbg, Ybg, score,enspeedmult
     enspeedmult=1
@@ -115,7 +115,6 @@ def main():
         dt = clock.tick(60) / 1000
     pygame.quit()
     name=input("what is your name?")
-    score=300
     fields=["name","record"]
     data=pd.read_csv("leaderboard.csv",)
     data=pd.DataFrame(data)
